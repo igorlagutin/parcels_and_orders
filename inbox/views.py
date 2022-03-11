@@ -16,8 +16,7 @@ class StartpageView(LoginRequiredMixin, TemplateView):
     template_name = "common/startpage.html"
 
 
-class IndexView(LoginRequiredMixin, PermissionRequiredMixin, FilterView):
-    permission_required = "inbox.manager"
+class IndexView(LoginRequiredMixin, FilterView):
     paginate_by = 50
     context_object_name = "tickets"
     filterset_class = TicketFilter
