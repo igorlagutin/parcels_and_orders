@@ -1,0 +1,18 @@
+<span class="col-sm-offset-2">Создал: <b>{{ticket.creator.last_name}}</b> </span>
+<span>/{{ticket.created_on}}</span>
+</br>
+{% if ticket.modified_by %}
+<span class="col-sm-offset-2">Редактировал:  <b>{{ticket.modified_by.last_name}}</b></span>
+<span>/{{ticket.modified_on}}</span>
+</br>
+{% endif %}
+{% if ticket.debit_sign %}
+<span class="col-sm-offset-2">Оприходовал: <b>{{ticket.debit_sign.last_name}}</b></span>
+<span>/{{ticket.debit_on}} </span>
+</br>
+{% endif %}
+{% if ticket.driver_sign %}
+<span class="col-sm-offset-2">Подпись водителя: <b>{{ticket.driver_sign.last_name}}</b></span>
+<span>/{{ticket.debit_sign_on}} </span>
+</br>
+{% endif %}

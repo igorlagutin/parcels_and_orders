@@ -1,0 +1,160 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <title>Просмотр декларации {{ticket.serial}}</title>
+{% endblock %}
+
+{% block navbar_left %}
+{% endblock %}
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block content %}
+  <h4 class="col-sm-offset-2"><b>Просмотр декларации:</b></h4>
+  {% include "inbox/autors_and_dates.html" %}
+
+
+  <form action="{% url 'inbox_detail' ticket.id %}"
+        method="post"
+        class="form-horizontal">
+          {% csrf_token %}
+          <span id="deliver" class="hidden">{{ticket.deliver.id}}</span>
+          {% if ticket.deliver_id in refresh_tickets  %}
+          <div class="form-group">
+              <label class="control-label col-sm-2">
+                  Инфо НП
+                  </br>
+                  <span class="glyphicon glyphicon-repeat"
+                        id="refreshIcon">
+                  </span>
+              </label>
+              <div class="col-sm-4">
+                <span class="help-block" id="npStatus">
+                    {{ticket.delivery_status}}
+                    </br>
+                    {{ticket.delivery_destination}}
+                </span>
+              </div>
+          </div>
+          {% endif %}
+
+
+          <div class="form-group">
+              <label class="control-label col-sm-2">Перевозчик</label>
+              <div class="col-sm-4">
+                <span class="help-block">{{ticket.deliver}}</span>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label col-sm-2">ТТН</label>
+              <div class="col-sm-4">
+                <span class="help-block">{{ticket.serial}}</span>
+              {% include "inbox/deliver_links.html" %}
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label col-sm-2">Количество мест</label>
+              <div class="col-sm-4">
+                <span class="help-block">{{ticket.quantity_of_places}}</span>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label col-sm-2">Отправитель</label>
+              <div class="col-sm-4">
+                <span class="help-block">{{ticket.sender}}</span>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label col-sm-2">Сумма</label>
+              <div class="col-sm-4">
+                <span class="help-block">{{ticket.money}}</span>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label col-sm-2">Что в посылке</label>
+              <div class="col-sm-4">
+                <span class="help-block">{{ticket.content}}</span>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label col-sm-2">Статус посылки</label>
+              <div class="col-sm-4">
+                <span class="help-block">
+                  {% if ticket.is_received %} Получена {% else %} В пути {% endif %}
+                </span>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label class="control-label col-sm-2">Примечание</label>
+              <div class="col-sm-4">
+                <span class="help-block">{{ticket.notes|linebreaks}}</span>
+              </div>
+          </div>
+
+          {% if ticket.is_received %}
+          <div class="form-group">
+              <label class="control-label col-sm-2">Примечание при приходовании</label>
+              <div class="col-sm-4">
+                <span class="help-block">{{ticket.debit_comment|linebreaks}}</span>
+              </div>
+          </div>
+          {% else %}
+          <div class="form-group {% if form.ticket_debit_comment.errors %}has-error{% endif %}">
+              <label class="control-label col-sm-2">{{form.debit_comment.label}}</label>
+              <div class="col-sm-4">
+                {{form.debit_comment}}
+                {% if form.debit_comment.errors %}
+                  <span class="help-block">
+                    {% for error in form.debit_comment.errors %}{{error}} {% endfor %}
+                  </span>
+                {% endif %}
+              </div>
+          </div>
+          {% endif %}
+
+          <div class="col-sm-offset-2">
+
+            {% if not ticket.is_received %}
+            <button type="submit" class = "btn btn-default">Оприходовать</button>
+            {% if request.user == ticket.creator or perms.inbox.superuser %}
+            <a href="{% url 'inbox_edit' ticket.id %}"
+               class="btn btn-default"
+               role="button">Редактировать</a>
+            {% endif %}
+
+            <a href="{% url 'inbox' %}"
+               class="btn btn-default"
+               role="button">Отмена</a>
+            {% else %}
+            {% if perms.inbox.superuser %}
+            <a href="{% url 'inbox_edit' ticket.id %}"
+               class="btn btn-default"
+               role="button">Редактировать</a>
+            {% endif %}
+            {% if request.user == ticket.debit_sign or perms.inbox.superuser %}
+            <button type="submit"
+                    class = "btn btn-default">
+              Отменить приход
+            </button>
+            {% endif %}
+            <a href="{% url 'inbox' %}"
+               class="btn btn-default"
+               role="button">
+              Отмена
+            </a>
+            {% endif %}
+
+          </div>
+
+  </form>
+{% endblock %}

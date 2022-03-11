@@ -1,0 +1,69 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <title>Создание декларации</title>
+{% endblock %}
+
+{% block navbar_left %}
+
+{% endblock %}
+{% block navbar_right %}
+
+{% endblock %}
+
+{% block content %}
+
+      <h4 class="col-sm-offset-2"><b>Создание декларации:</b></h4>
+      <form action="{% url 'inbox_create' %}" method="post" class="form-horizontal">
+              {% csrf_token %}
+              <span class="glyphicon glyphicon-refresh"
+                id="fa-spinner"
+                style="display:none">
+              </span>
+              <div class="form-group">
+                <label
+                        id="statusLabel"
+                        class="control-label col-sm-2"
+                        style="display:none">
+                  Подсказка
+                </label>
+                <div id="status"
+                     class="alert alert-success col-sm-4"
+                     style="display:none">
+
+                </div>
+              </div>
+              {% for field in form %}
+
+                      <div class="form-group {% if field.errors %}has-error{% endif %}">
+                          <label class="control-label col-sm-2">{{field.label}}</label>
+                          <div class="col-sm-4">
+                          {{field}}
+                          {% if field.errors %}
+                          <span class="help-block">{% for error in field.errors %}{{error}} {% endfor %}</span>
+                          {% endif %}
+                          </div>
+                      </div>
+
+              {% endfor %}
+              <button type="submit"
+                      class="btn btn-default col-sm-offset-2"
+                      name="create">Сохранить
+              </button>
+              <button type="submit"
+                      class = "btn btn-default"
+                      name="create_and_add">
+                Сохранить и добавить еще один
+              </button>
+              <a href="{% url 'inbox' %}"
+                 class="btn btn-default"
+                 role="button">
+                Отмена
+              </a>
+      </form>
+
+
+
+{% endblock %}

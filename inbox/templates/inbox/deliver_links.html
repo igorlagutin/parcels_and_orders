@@ -1,0 +1,10 @@
+{% if ticket.deliver.name == "Автолюкс" %}
+<a href="http://autolux-post.com.ua/tracking/" target="_blank">На сайт перевозчика</a>
+{% elif ticket.deliver.name == "Новая Почта" %}
+<a href="https://novaposhta.ua/tracking/?phone=&cargo_number={{ticket.ticket_serial}}" target="_blank">На сайт перевозчика</a>
+{% elif ticket.deliver.name == "Интайм" %}
+<a href="http://www.intime.ua/ttn/?ttn={{ticket.ticket_serial}}" target="_blank">На сайт перевозчика</a>
+{% elif ticket.deliver.name == "САТ" %}
+<a href="http://www.sat.ua/new/ru/services/tracking/" target="_blank">На сайт перевозчика</a>
+{% endif %}
+

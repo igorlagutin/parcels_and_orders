@@ -1,0 +1,68 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <title>Редактирование декларации {{ticket.serial}}</title>
+{% endblock %}
+
+{% block navbar_left %}
+{% endblock %}
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block content %}
+  <h4 class="col-sm-offset-2"><b>Редактирование декларации:</b></h4>
+  {% include "inbox/autors_and_dates.html" %}
+  <br>
+  <form action="{% url 'inbox_edit' ticket.id %}"
+        method="post"
+        class="form-horizontal">
+
+          {% csrf_token %}
+          <span class="glyphicon glyphicon-refresh"
+                id="fa-spinner"
+                style="display:none">
+              </span>
+
+          <div class="form-group">
+            <label id="statusLabel"
+                   class="control-label col-sm-2"
+                   style="display:none">
+              Подсказка
+            </label>
+            <div id="status"
+                 class="alert alert-success col-sm-4"
+                 style="display:none">
+            </div>
+          </div>
+
+          {% for field in form%}
+                  <div class="form-group {% if field.errors %}has-error{% endif %}">
+                      <label class="control-label col-sm-2">{{field.label}}</label>
+                      <div class="col-sm-4">
+                      {{field}}
+                      {% if field.errors %}
+                      <span class="help-block">
+                        {% for error in field.errors %}{{error}} {% endfor %}
+                      </span>
+                      {% endif %}
+                      </div>
+                  </div>
+          {% endfor %}
+
+          <button type="submit"
+                  class="btn btn-default col-sm-offset-2">
+            Сохранить
+          </button>
+
+          <a href="{% url 'inbox' %}"
+             class="btn btn-default"
+             role="button">
+            Отмена
+          </a>
+  </form>
+
+{% endblock %}
+

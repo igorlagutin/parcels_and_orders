@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
-
-
 
 
 class Deliver(models.Model):
@@ -34,7 +33,7 @@ class Ticket(models.Model):
 
     deliver = models.ForeignKey(Deliver, on_delete=models.PROTECT)
     serial = models.CharField(max_length=20, unique=True)
-    quantity_of_places = models.IntegerField()
+    quantity_of_places = models.IntegerField(default=1)
     sender = models.CharField(max_length=100, blank=True)
     is_received = models.BooleanField(default=False)
     notes = models.CharField(blank=True, max_length=2048)
@@ -92,6 +91,9 @@ class Ticket(models.Model):
         verbose_name_plural = "Посылки"
         permissions = (("manager", "Can view and edit tickets"), ("sklad", "sign product tickets"),
                        ("director", "see signed products"))
+
+    def get_absolute_url(self):
+        return reverse('inbox_detail', kwargs={'ticket_id': self.pk})
 
     def __str__(self):
         return self.serial
