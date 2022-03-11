@@ -1,0 +1,10 @@
+        <li>
+            <div class="btn-group navbar-btn">
+              <!-- <button class="btn btn-link" href="{% url 'startpage' %}">На главную</button> -->
+              <a href="{% url 'startpage' %}" class="btn btn-link" role="button">На главную</a>
+              <button data-toggle="dropdown" class="btn btn-link dropdown-toggle"><span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  {% include 'common/app_links.html' %}
+                </ul>
+            </div>
+        </li>

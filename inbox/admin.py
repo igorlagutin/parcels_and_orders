@@ -1,3 +1,7 @@
 from django.contrib import admin
+from inbox.models import Ticket, Content, Deliver
 
-# Register your models here.
+
+admin.site.register(Ticket)
+admin.site.register(Content)
+admin.site.register(Deliver)

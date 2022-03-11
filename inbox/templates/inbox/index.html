@@ -1,0 +1,180 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load older_five_days %}
+{% block head %}
+    <title>Декларации</title>
+{% endblock %}
+
+{% block navbar_left %}
+  <li><a href="{% url 'inbox_create' %}">Создать</a></li>
+{% endblock %}
+
+{% block navbar_right %}
+  <li><a href="{% url 'print' %}">Печать</a></li>
+{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'inbox' %}" method="get">
+  <div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <tr>
+      <th>Перевозчик</th>
+      <th>ТТН</th>
+      <th>Содержимое</th>
+      <th>Сумма</th>
+      <th>Мест</th>
+      {% if perms.inbox.manager %}<th>Статус</th>{% endif %}
+      <th>Отправитель</th>
+      {% if perms.inbox.manager %} <th>Дата создания</th>{% endif %}
+      {% if perms.inbox.manager %}<th>Автор</th>{% endif %}
+    </tr>
+
+
+    <tr>
+      <td>{{ filter.form.deliver }}</td>
+      <td>{{ filter.form.serial__icontains }}</td>
+      <td>{{ filter.form.content }}</td>
+      <td></td>
+      <td></td>
+      {% if perms.inbox.manager %}
+        <td>{{ filter.form.is_received }}</td>
+      {% endif %}
+      <td>{{ filter.form.sender__icontains }}</td>
+      {% if perms.inbox.manager %}
+        <td>{{ filter.form.created_on }}</td>
+      {% endif %}
+      {% if perms.inbox.manager %}
+        <td>
+          <div class="input-group">
+            {{ filter.form.creator }}
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+              </span>
+              <span class="input-group-btn">
+                <a class="btn btn-danger" href="{% url 'inbox' %}" role="button">
+                  <span class="glyphicon glyphicon-remove-circle"></span>
+                </a>
+              </span>
+          </div>
+        </td>
+      {% endif %}
+    </tr>
+
+    {% if tickets %}
+    {% for ticket in tickets %}
+    <tr {% if ticket.is_received %}
+          class="success"
+        {% elif ticket.created_on.date|older_five_days %}
+          class="danger"
+        {% endif %}>
+      <td class='col-lg-1'>
+        {{ticket.deliver}}
+        {% if ticket.deliver_id == 3%}
+          {% if ticket.content_id == 4 %}
+              <span class="glyphicon glyphicon-info-sign"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="{{ticket.delivery_destination}}">
+              </span>
+          {% else %}
+            {% if ticket.delivery_destination == 'Відділення №24 (до 30 кг): вул. Фонтанська дорога, 4а' %}
+              <span class="glyphicon glyphicon-ok-circle"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="{{ticket.delivery_destination}}">
+              </span>
+            {% else %}
+              <span class="glyphicon glyphicon-remove-circle"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="{{ticket.delivery_destination}}">
+              </span>
+            {% endif %}
+          {% endif %}
+        {% elif ticket.deliver_id == 2 %}
+            {% if ticket.delivery_destination == 'вул.Раскидайлівська, 18' %}
+              <span class="glyphicon glyphicon-ok-circle"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="{{ticket.delivery_destination}}">
+              </span>
+            {% else %}
+              <span class="glyphicon glyphicon-remove-circle"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="{{ticket.delivery_destination}}">
+              </span>
+            {% endif %}
+        {% endif %}
+
+      </td>
+        <td class='col-lg-2'>
+          <a href="{% url 'inbox_detail' ticket_id=ticket.pk %}">
+            {{ticket.serial}}
+          </a>
+        </td>
+        <td class='col-lg-2'>{{ticket.content}}</td>
+        <td class='col-lg-1'>{{ticket.money}}</td>
+        <td class='col-lg-1'>{{ticket.quantity_of_places}}</td>
+      {% if perms.inbox.manager %}
+        <td class='col-lg-1'>
+          {% if ticket.is_received %} Получена {% else %} В пути {% endif %}
+        </td>
+      {% endif %}
+      <td class='col-lg-2'>
+        {{ticket.sender}}
+        </br>
+        {% if not ticket.is_received and ticket.deliver_id == 3 or ticket.deliver_id == 2 %}
+          <span class="label label-info"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="{{ticket.delivery_status}}">
+            {{ticket.delivery_status|truncatechars:25}}
+          </span>
+        {% endif %}
+      </td>
+      {% if perms.inbox.manager %}
+          <td class='col-lg-1'>
+            {{ticket.created_on|date:"d/n/Y"}}
+          </td>
+      {% endif %}
+      {% if perms.inbox.manager %}
+          <td class='col-lg-1'>
+            {{ticket.creator.last_name}}
+          </td>
+      {% endif %}
+
+    </tr>
+    {% endfor %}
+
+
+
+
+    {% else %}
+
+    По вашему запросу деклараций не найдено
+
+    {% endif %}
+  </table>
+  </div>
+</form>
+
+<div class="pager">
+    <li>Страница {{ tickets.number }} из {{ tickets.paginator.num_pages }}</li>
+    {% if tickets.has_previous %}
+    <li><a href="?{{ request.GET.urlencode }}&page={{ tickets.previous_page_number }}">
+      Предидущая
+    </a></li>
+    {% endif %}
+
+    {% if tickets.has_next %}
+    <li><a href="?{{ request.GET.urlencode }}&page={{ tickets.next_page_number }}">
+      Следующая
+    </a></li>
+    {% endif %}
+</div>
+
+{% endblock %}

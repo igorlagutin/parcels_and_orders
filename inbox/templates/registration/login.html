@@ -1,0 +1,61 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load older_five_days %}
+{% block head %}
+    <title>Логин</title>
+{% endblock %}
+
+{% block navbar_left %}
+{% endblock %}
+
+{% block navbar_right %}
+{% endblock %}
+
+{% block content %}
+  {% if form.errors and not form.non_field_errors %}
+  <p class="errornote">
+  {% if form.errors.items|length == 1 %}Исправьте ошибку{% else %}Исправьте ошибки{% endif %}
+  </p>
+  {% endif %}
+
+  {% if form.non_field_errors %}
+  {% for error in form.non_field_errors %}
+  <p class="errornote">
+      {{ error }}
+  </p>
+  {% endfor %}
+  {% endif %}
+
+
+
+  <form class="form-horizontal" role="form" action="{% url 'login' %}" method="post" id="login-form">{% csrf_token %}
+    <div class="form-group">
+      <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+      <div class="col-sm-10">
+        {{ form.username.errors }}
+       {{ form.username }}
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword3" class="col-sm-2 control-label">Пароль</label>
+      <div class="col-sm-10">
+        {{ form.password.errors }}
+       {{ form.password }}
+
+      <input type="hidden" name="next" value="{{ next }}" />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default">Войти</button>
+      </div>
+    </div>
+  </form>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+{% endblock %}
