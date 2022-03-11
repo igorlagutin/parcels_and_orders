@@ -7,7 +7,6 @@ from inbox.forms import TicketCreateEditForm, TicketViewDebitForm
 
 class IndexServiceTest(TestCase):
 
-
     @classmethod
     def setUpClass(cls):
         deliver = Deliver.objects.create(name="Nova Post")

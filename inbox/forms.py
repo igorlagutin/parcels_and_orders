@@ -4,7 +4,6 @@ from django.forms import ModelForm, widgets
 from inbox.models import Ticket
 
 
-
 class TicketCreateEditForm(ModelForm):
     """crate and edit form"""
 
@@ -86,6 +85,7 @@ class TicketCreateEditForm(ModelForm):
 
 class TicketViewDebitForm(ModelForm):
     """view form"""
+
     class Meta:
         model = Ticket
         fields = ['debit_comment']

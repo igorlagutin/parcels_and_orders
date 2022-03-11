@@ -1,6 +1,6 @@
-from inbox.repozitory import TicketRepozitory
 from django.utils import timezone
-from django.shortcuts import render
+
+from inbox.repozitory import TicketRepozitory
 
 
 class TicketService:

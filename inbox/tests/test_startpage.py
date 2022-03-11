@@ -15,7 +15,7 @@ class StartPageTest(TestCase):
     def tearDown(self):
         self.user.delete()
 
-    def test_satrtpage_redirect_to_login_page_for_not_auth(self):
+    def test_startpage_redirect_to_login_page_for_not_auth(self):
         response = self.client.get('/')
         self.assertRedirects(
             response,
@@ -24,7 +24,7 @@ class StartPageTest(TestCase):
             target_status_code=200
         )
 
-    def test_satrtpage_allow_authentificated(self):
+    def test_startpage_allow_authenticated(self):
         self.client.login(username='test', password='12test12')
         response = self.client.get(reverse('startpage'))
         self.assertEqual(response.status_code, 200)

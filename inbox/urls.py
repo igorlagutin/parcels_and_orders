@@ -10,4 +10,3 @@ urlpatterns = [
     path('<int:pk>/detail/', DetailDebitTicketView.as_view(), name="inbox_detail"),
     path('', IndexView.as_view(), name="print"),
 ]
-

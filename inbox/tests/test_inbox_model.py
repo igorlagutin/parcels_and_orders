@@ -1,8 +1,8 @@
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import User
 from django.test import TestCase, RequestFactory
 from django.utils import timezone
-from django.urls import reverse
 from inbox.models import Deliver, Ticket, Content
+
 
 class InboxModelTest(TestCase):
 
@@ -24,8 +24,6 @@ class InboxModelTest(TestCase):
         Deliver.objects.all().delete()
         Content.objects.all().delete()
 
-
-
     def setUp(self):
         self.user = User.objects.create_user(
             username='test',
@@ -37,10 +35,8 @@ class InboxModelTest(TestCase):
         self.request = RequestFactory()
         self.request.user = self.user
 
-
     def tearDown(self):
         self.user.delete()
-
 
     def test_deliver_created(self):
         self.assertEqual(Deliver.objects.last().name, 'Nova Post')
