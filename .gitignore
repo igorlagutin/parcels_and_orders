@@ -9,6 +9,7 @@ db.sqlite3-journal
 media
 migrations/
 static/admin
+static/rest_framework
 env.py
 *.py[cod]
 *$py.class
