@@ -6,7 +6,7 @@ var refreshIcon = document.getElementById('refreshIcon')
 refreshIcon.addEventListener("click", () => {
     refreshIcon.classList.add("spin");
     RequestApi(refreshUrl, "POST").then((response) =>{
-        npStatus.innerHTML =  response.delivery_status + "</br>"  + response.delivery_destination;
+        npStatus.innerHTML =  response.Status + "</br>"  + response.WarehouseRecipient;
     }).then(npStatus.innerHTML =  "Произошла ошибка, попробуйте позже");
     setTimeout(() => {  refreshIcon.classList.remove("spin"); }, 1000);
 

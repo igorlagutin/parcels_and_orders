@@ -11,7 +11,7 @@ class TicketAdmin(admin.ModelAdmin):
         'debit_on',
         'debit_sign_on',
         'delivery_destination',
-        # 'delivery_status'
+        'delivery_status'
     )
 
 

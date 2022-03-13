@@ -10,6 +10,6 @@ urlpatterns = [
     path('<int:pk>/edit/', login_required(EditTicketView.as_view()), name="inbox_edit"),
     path('<int:pk>/detail/', DetailDebitTicketView.as_view(), name="inbox_detail"),
     path('', IndexView.as_view(), name="print"),
-    path('<int:pk>/api/', RefreshTicketStatusAPIView.as_view(), name="inbox_api"),
+    path('<int:pk>/api/', RefreshTicketStatusAPIView.as_view(), name="inbox_ticket_api_status"),
     path('api/', GetTicketStatusAPIView.as_view(), name="inbox_api"),
 ]

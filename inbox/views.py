@@ -101,7 +101,7 @@ class GetTicketStatusAPIView(LoginRequiredMixin, PermissionRequiredMixin, APIVie
             serial = serializer.validated_data['serial']
             deliver_name = serializer.validated_data['deliver_name']
             return Response(
-                ApiTicketService.get_api_stsus_by_serial_and_deliver_name(
+                ApiTicketService.get_api_status_by_serial_and_deliver_name(
                     serial,
                     deliver_name))
         else:

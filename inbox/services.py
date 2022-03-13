@@ -39,5 +39,5 @@ class TicketService:
 
 class ApiTicketService:
     @staticmethod
-    def get_api_stsus_by_serial_and_deliver_name(serial: int, deliver_name: str) -> dict:
+    def get_api_status_by_serial_and_deliver_name(serial: int, deliver_name: str) -> dict:
         return ApiTicketStatusUtils(serial, deliver_name).get_ticket_deliver_status()

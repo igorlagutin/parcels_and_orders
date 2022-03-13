@@ -11,17 +11,19 @@ class ApiTicketStatusUtils:
         self.serial = str(serial)
         self.deliver_name = deliver_name
 
-    def _get_autolux_token(self, email: str, password: str) -> str:
+    @classmethod
+    def _get_autolux_token(cls, email: str, password: str) -> str:
         """Used for Autolux deliver to get API token"""
         payload = {'email': email, 'password': password}
         raw_response = requests.post(AUTOLUX_API_LOGIN_URL, data=payload)
         response = json.loads(raw_response.content.decode())
         return response['access_token']
 
-    def _get_autolux_ofice_by_id(self, office_id: int) -> dict:
+    @classmethod
+    def _get_autolux_ofice_by_id(cls, office_id: int) -> dict:
 
         """Used for Autolux deliver api to get office info"""
-        access_token = self._get_autolux_token(
+        access_token = cls._get_autolux_token(
             AUTOLUX_API_LOGIN, AUTOLUX_API_PASS)
         api_address = AUTOLUX_API_URL
         payload = {'access_token': access_token}

@@ -1,8 +1,10 @@
+from unittest import mock
 from django.contrib.auth.models import User
 from django.test import TestCase, RequestFactory
 from inbox.models import Ticket, Deliver, Content
-from inbox.services import TicketService
+from inbox.services import TicketService, ApiTicketService
 from inbox.forms import TicketCreateEditForm, TicketViewDebitForm
+from inbox.api_utils import ApiTicketStatusUtils
 
 
 class IndexServiceTest(TestCase):
@@ -37,6 +39,20 @@ class IndexServiceTest(TestCase):
         factory = RequestFactory()
         self.request = factory.get('/')
         self.request.user = User.objects.last()
+        self.get_ticket_deliver_status_mock_object = {
+            'CityRecipient': 'testCity',
+            'WarehouseRecipient': 'testRecipient',
+            'ScheduledDeliveryDate': 'testDate',
+            'Status': 'testStatus'
+        }
+        self.patcher = mock.patch.object(
+            ApiTicketStatusUtils,
+            'get_ticket_deliver_status',
+            return_value=self.get_ticket_deliver_status_mock_object)
+        self.patcher.start()
+
+    def tearDown(self):
+        self.patcher.stop()
 
     def test_get_ticket_returns_ticket(self):
         last_id = Ticket.objects.last().id
@@ -86,3 +102,8 @@ class IndexServiceTest(TestCase):
         ticket = updated_form.save()
         self.assertTrue(ticket.debit_sign is None)
         self.assertTrue(ticket.debit_on is None)
+
+    def test_get_api_status_by_serial_and_deliver_name(self):
+        response = ApiTicketService.get_api_status_by_serial_and_deliver_name(11111, "test")
+        for key, value in self.get_ticket_deliver_status_mock_object.items():
+            self.assertEqual(response[key], value)
