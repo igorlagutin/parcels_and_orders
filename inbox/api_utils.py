@@ -1,8 +1,7 @@
 import requests
 import json
-import telegram
 from parcels_and_orders.env import AUTOLUX_API_URL, AUTOLUX_API_PASS, \
-    AUTOLUX_API_LOGIN, BOT_TOKEN, NOVA_POST_API_URL, DRIVERS_PHONE, AUTOLUX_API_LOGIN_URL
+    AUTOLUX_API_LOGIN, NOVA_POST_API_URL, DRIVERS_PHONE, AUTOLUX_API_LOGIN_URL
 
 
 class ApiTicketStatusUtils:
