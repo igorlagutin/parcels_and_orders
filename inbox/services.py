@@ -1,6 +1,6 @@
 from django.utils import timezone
-
-from inbox.repozitory import TicketRepozitory
+from inbox.repozitory import TicketDBRepozitory
+from inbox.api_utils import ApiTicketStatusUtils
 
 
 class TicketService:
@@ -8,7 +8,7 @@ class TicketService:
         self.request = request
 
     def get_ticket(self, pk: int) -> object:
-        return TicketRepozitory(self.request).get_ticket_by_pk(pk)
+        return TicketDBRepozitory().get_ticket_by_pk(pk)
 
     def create(self, form: object) -> object:
         ticket = form.save(commit=False)
@@ -35,3 +35,9 @@ class TicketService:
             ticket.debit_on = None
         form.save()
         return form
+
+
+class ApiTicketService:
+    @staticmethod
+    def get_api_stsus_by_serial_and_deliver_name(serial: int, deliver_name: str) -> dict:
+        return ApiTicketStatusUtils(serial, deliver_name).get_ticket_deliver_status()

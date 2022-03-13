@@ -93,7 +93,7 @@ class Ticket(models.Model):
                        ("director", "see signed products"))
 
     def get_absolute_url(self):
-        return reverse('inbox_detail', kwargs={'ticket_id': self.pk})
+        return reverse('inbox_detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.serial

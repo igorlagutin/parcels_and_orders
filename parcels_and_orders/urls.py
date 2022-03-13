@@ -8,8 +8,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', login_required(
         TemplateView.as_view(template_name="common/startpage.html")), name='startpage'),  # start page
-    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-    path('accounts/login/', auth_views.LoginView.as_view(next_page='startpage'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     path('inbox/', include('inbox.urls')),
 
 ]

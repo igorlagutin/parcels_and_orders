@@ -22,7 +22,8 @@
         class="form-horizontal">
           {% csrf_token %}
           <span id="deliver" class="hidden">{{ticket.deliver.id}}</span>
-          {% if ticket.deliver_id in refresh_tickets  %}
+
+          {% if ticket.delivery_status %}
           <div class="form-group">
               <label class="control-label col-sm-2">
                   Инфо НП
@@ -155,6 +156,11 @@
             {% endif %}
 
           </div>
-
   </form>
+
+<span style="display:none;" id="refreshUrl">{% url 'inbox_api' pk=ticket.pk %}</span>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{% static '/js/inbox_detail.js' %}" ></script>
 {% endblock %}

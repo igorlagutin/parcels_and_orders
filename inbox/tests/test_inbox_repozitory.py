@@ -1,6 +1,6 @@
 from django.test import TestCase
 from inbox.models import Ticket, Deliver, Content
-from inbox.repozitory import TicketRepozitory
+from inbox.repozitory import TicketDBRepozitory
 
 
 class IndexRepozitoryTest(TestCase):
@@ -24,9 +24,9 @@ class IndexRepozitoryTest(TestCase):
         Content.objects.all().delete()
 
     def test_get_ticket_list_return_ticket_list(self):
-        self.assertEqual(TicketRepozitory.get_ticket_list().count(), 5)
+        self.assertEqual(TicketDBRepozitory.get_ticket_list().count(), 5)
 
     def test_get_ticket_by_pk_return_ticket_if_exist(self):
         ticket_from_db = Ticket.objects.get(pk=3)
-        ticket_from_repo = TicketRepozitory.get_ticket_by_pk(3)
+        ticket_from_repo = TicketDBRepozitory.get_ticket_by_pk(3)
         self.assertEqual(ticket_from_db, ticket_from_repo)

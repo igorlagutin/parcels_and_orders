@@ -10,6 +10,7 @@
     <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
     <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static '/css/style.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     {% block head %}
     <title>Декларации</title>
     {% endblock %}
@@ -75,7 +76,8 @@
     <script src="{% static '/js/bootstrap.min.js' %}" ></script>
     <script src="{% static '/js/bootstrap-datepicker.js' %}" ></script>
     <script src="{% static '/js/bootstrap-datepicker.ru.min.js' %}" ></script>
-
     <script src="{% static '/js/common.js' %}" ></script>
+    {% block scripts %}
+    {% endblock %}
   </body>
 </html>
